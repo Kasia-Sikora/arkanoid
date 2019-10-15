@@ -1,0 +1,90 @@
+body {
+    background-image: url('/static/img/wallpaper2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.title {
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    font-size: 75px;
+    color: lightgrey;
+    margin-top: 10%;
+    text-shadow: 5px 5px 2px white;
+    margin-bottom: 3%;
+}
+
+a.button {
+    margin-left: 40%;
+}
+
+
+button,
+a.button {
+    background-color: #0e396c;
+    border: none;
+    color: lightgrey;
+    padding: 20px 34px;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 2px 4px 2px lightblue;
+    border-radius: 10px;
+    text-shadow: 5px 5px 2px black;
+}
+
+
+.grid {
+    width: 600px;
+    height: 700px;
+    background-image: url('/static/img/hud.png');
+    background-size: cover;
+    background-color: black;
+    opacity: 0.8;
+    box-shadow: 10px 10px 10px 10px black;
+    margin-top: 2%;
+    margin-left: 20%;
+    padding: 30px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    display: flex;
+}
+
+
+/*.line {*/
+/*    margin-top:570px;*/
+/*    display: flex;*/
+/*    height: 20px;*/
+/*    width: 600px;*/
+/*    background-color: white;*/
+/*}*/
+
+.brick {
+    background-image: url('/static/img/brick.png');
+    background-size: cover;
+    height: 20px;
+    width: 50px;
+    margin-top:20%;
+    margin-left: 40px;
+}
+
+.paddle {
+    background-image: url('/static/img/paddle.jpg');
+    background-size: cover;
+    height: 20px;
+    width: 110px;
+    margin-top:570px;
+    position: absolute;
+    margin-left: 0;
+}
+
+.ball {
+    background-image: url('/static/img/ball.png');
+    background-size: cover;
+    height: 20px;
+    width: 20px;
+    margin-top: 550px;
+    position: absolute;
+}
