@@ -52,30 +52,51 @@ ball.setAttribute('class', 'ball');
 ball.classList.add('ball');
 grid.appendChild(ball);
 
+let y= 550;
+let x = 0;
 
 function moveBall() {
-    let s = document.querySelector('.ball');
-    let margin_top = 550;
-    let margin_bottom = 0;
-    let margin_left = 0;
-    let margin_right = 0;
-    let operand = '--';
-    let id = setInterval(frame, 10);
-      function frame() {
-            //margin-left: -580
-            //margin-right: -570
-            //margin-top: 640
-            if (margin_top === 640) {
-                s.style.display = 'none';
-              clearInterval(id);
-            }
-            if (margin_top === 0) {
-                operand = '++'
-            }
-            else {
-              margin_top--;
-              s.style.marginTop = margin_top + 'px';
+    let id = setInterval(frame, 1000);
+    function frame() {
+        //margin-left: -580
+        //margin-right: -570
+        //margin-top: 640
+        if (y >= 640) {
+            ball.style.display = 'none';
+            clearInterval(id);
         }
+        if (y === 1) {
+           moveBallDown()
+            // y += 1;
+            // ball.style.marginTop = y + 'px';
+            // console.log(ball.style.marginTop)
+        }
+
+        if (y <= 550) {
+            setInterval(moveBallUp, 100)
+            // y -= 1;
+            // ball.style.marginTop = y + 'px';
+            // console.log(ball.style.marginTop)
+        }
+    }
+}
+
+function moveBallUp() {
+    while (y > 1){
+        console.log('up', y);
+        y -= 1;
+        ball.style.marginTop = y + 'px';
+        console.log(ball.style.marginTop)
+    }
+}
+
+
+function moveBallDown(){
+    while (y <= 630){
+        console.log('down',y);
+        y+=1;
+        ball.style.marginTop = y + 'px';
+        console.log(ball.style.marginTop)
     }
 }
 
@@ -109,7 +130,6 @@ document.addEventListener('keydown', (event) => {
       leftArrowPressed()
   }
   if (keyName === 'ArrowRight' && paddleMarginLeft <=460){
-    // movePaddle(keyName);
       rightArrowPressed()
   }
   }, false);
