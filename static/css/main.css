@@ -48,26 +48,21 @@ a.button {
     margin-left: 20%;
     padding: 30px;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    /*justify-content: space-evenly;*/
     display: flex;
 }
 
-
-/*.line {*/
-/*    margin-top:570px;*/
-/*    display: flex;*/
-/*    height: 20px;*/
-/*    width: 600px;*/
-/*    background-color: white;*/
-/*}*/
-
-.brick {
+.brick1,
+.brick2,
+.brick3,
+.brick4,
+.brick5 {
     background-image: url('/static/img/brick.png');
     background-size: cover;
     height: 20px;
     width: 50px;
-    margin-top:20%;
-    margin-left: 40px;
+    margin-top:120px;
+    margin-left: 60px;
 }
 
 .paddle {
@@ -76,8 +71,8 @@ a.button {
     height: 20px;
     width: 110px;
     margin-top:570px;
+    margin-left: 260px;
     position: absolute;
-    margin-left: 0;
 }
 
 .ball {
@@ -86,6 +81,10 @@ a.button {
     height: 20px;
     width: 20px;
     margin-top: 550px;
-    margin-left: 0;
+    margin-left: 305px;
     position: absolute;
+}
+
+.hide {
+    visibility: hidden;
 }
