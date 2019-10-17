@@ -1,25 +1,32 @@
 const newBricks = [
     {
         name: "brick1",
-        img: "/static/img/brick.png"
+        img: "/static/img/brick.png",
+        x_position: 60,
     },
     {
         name: "brick2",
-        img: "/static/img/brick.png"
+        img: "/static/img/brick.png",
+        x_position: 170,
     },
     {
         name: "brick3",
-        img: "/static/img/brick.png"
+        img: "/static/img/brick.png",
+        x_position: 280,
     },
     {
         name: "brick4",
-        img: "/static/img/brick.png"
+        img: "/static/img/brick.png",
+        x_position: 390,
     },
     {
         name: "brick5",
-        img: "/static/img/brick.png"
+        img: "/static/img/brick.png",
+        x_position: 500,
     },
 ];
+
+let isGameStarted = false;
 
 
 let game = document.getElementById('game');
@@ -87,15 +94,23 @@ function leftArrowPressed(movePaddle) {
     paddle.style.marginLeft = paddleMarginLeft + 'px';
 }
 
+function checkIsGameStarted(){
+    if (!isGameStarted){
+        startGame()
+    }
+}
 
 document.addEventListener('keydown', (event) => {
     const keyName = event.key;
     const movePaddle = 20;
 
+
     if (keyName === 'ArrowLeft' && paddleMarginLeft >= gridLeftEdge + movePaddle) {
+        checkIsGameStarted();
         leftArrowPressed(movePaddle)
     }
     else if (keyName === 'ArrowRight' && paddleMarginLeft <= gridRightEdge - paddleWidth) {
+        checkIsGameStarted();
         rightArrowPressed(movePaddle)
     }
 }, false);
@@ -127,6 +142,13 @@ function checkPaddleCollision() {
 }
 
 
+function looseGame(){
+    alert('You loose');
+    y_speed = 0;
+    ball.style.display = 'none';
+    y_ball_position = 550;
+}
+
 function checkGridEdgesCollision() {
 
     if (y_ball_position < gridTopEdge) {
@@ -139,91 +161,50 @@ function checkGridEdgesCollision() {
         x_speed = 10;
     }
     else if (y_ball_position > gridBottomEdge) {
-        y_speed = -3;
-        ball.style.display = 'none';
-        ball.parentNode.removeChild(ball);
-        alert('You loose')
+        looseGame()
     }
 }
 
+function hideBrick(brick1){
+    brick1.style.display = 'block';
+    brick1.classList.add('hide');
+}
 
-//https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Track_the_score_and_win
-function checkBrickCollision(handle) {
 
-    let brick1 = document.getElementsByClassName('brick1')[0];
-    let brick2 = document.getElementsByClassName('brick2')[0];
-    let brick3 = document.getElementsByClassName('brick3')[0];
-    let brick4 = document.getElementsByClassName('brick4')[0];
-    let brick5 = document.getElementsByClassName('brick5')[0];
-
-    let brick1_position_x = 60;
-    let brick2_position_x = 170;
-    let brick3_position_x = 280;
-    let brick4_position_x = 390;
-    let brick5_position_x = 500;
+function brickCollision(brick, brickPosition){
 
     let brickSize = 50;
+    let y_brickPosition = 120;
+    let brickHeight = 20;
 
-    let y_brickPosition = 130;
-    let brickHeight = 10;
-
-
-    if (x_ball_position + ballSize > brick1_position_x &&
-        x_ball_position < brick1_position_x + brickSize &&
-        y_ball_position > y_brickPosition &&
-        y_ball_position < y_brickPosition+brickHeight
-        && brick1.style.display === 'flex'
-    ) {
-        y_speed = 3;
-        brick1.style.display = 'block';
-        brick1.classList.add('hide');
-    }
-
-    else if (x_ball_position + ballSize > brick2_position_x &&
-        x_ball_position < brick2_position_x + brickSize &&
-        y_ball_position > y_brickPosition &&
-        y_ball_position < y_brickPosition+brickHeight
-        && brick2.style.display === 'flex'
-    ) {
-        y_speed = 3;
-        brick2.style.display = 'block';
-        brick2.classList.add('hide');
-    }
-
-    else if (x_ball_position + ballSize > brick3_position_x &&
-        x_ball_position < brick3_position_x + brickSize &&
-        y_ball_position > y_brickPosition &&
-        y_ball_position < y_brickPosition+brickHeight
-        && brick3.style.display === 'flex'
-    ) {
-        y_speed = 3;
-        brick3.style.display = 'block';
-        brick3.classList.add('hide');
-    }
-
-    else if (x_ball_position + ballSize > brick4_position_x &&
-        x_ball_position < brick4_position_x + brickSize &&
-        y_ball_position > y_brickPosition &&
-        y_ball_position < y_brickPosition+brickHeight
-        && brick4.style.display === 'flex'
-    ) {
-        y_speed = 3;
-        brick4.style.display = 'block';
-        brick4.classList.add('hide');
-    }
-
-    else if (x_ball_position + ballSize > brick5_position_x &&
-        x_ball_position < brick5_position_x + brickSize &&
-        y_ball_position > y_brickPosition &&
-        y_ball_position < y_brickPosition+brickHeight
-        && brick5.style.display === 'flex'
-    ) {
-        y_speed = 3;
-        brick5.style.display = 'block';
-        brick5.classList.add('hide');
-    }
-
+    return x_ball_position + ballSize > brickPosition - ballSize/2 &&
+    x_ball_position < brickPosition + brickSize &&
+    y_ball_position > y_brickPosition &&
+    y_ball_position < y_brickPosition + brickHeight
 }
+
+
+function canBrickBounce(brick1){
+    return brick1.style.display === 'flex'
+}
+
+
+function updateBallMovement(brick, brickPosition){
+    if (brickCollision(brick, brickPosition) && canBrickBounce(brick)
+    ) {
+        y_speed = 3;
+        hideBrick(brick);
+    }
+}
+
+
+function checkBrickCollision(handle) {
+
+    for (let i=0; i < newBricks.length; i++){
+        let brick = document.getElementsByClassName(`${newBricks[i].name}`)[0];
+        updateBallMovement(brick, newBricks[i].x_position );
+        }
+    }
 
 
 function moveBall() {
@@ -237,4 +218,5 @@ function moveBall() {
 
 function startGame() {
     setInterval(moveBall, 30);
+    isGameStarted = true;
 }
