@@ -68,6 +68,7 @@ let y_speed = -3;
 
 
 let paddleMarginLeft = 260;
+let paddleWidth = 110;
 
 
 if (game) {
@@ -94,7 +95,7 @@ document.addEventListener('keydown', (event) => {
     if (keyName === 'ArrowLeft' && paddleMarginLeft >= gridLeftEdge + movePaddle) {
         leftArrowPressed(movePaddle)
     }
-    else if (keyName === 'ArrowRight' && paddleMarginLeft <= gridRightEdge - 100) {
+    else if (keyName === 'ArrowRight' && paddleMarginLeft <= gridRightEdge - paddleWidth) {
         rightArrowPressed(movePaddle)
     }
 }, false);
@@ -113,20 +114,20 @@ function updateBallPosition() {
 }
 
 
-function checkPaddlePosition() {
+function checkPaddleCollision() {
     const y_paddlePosition = 550;
     const paddleHeight = 20;
 
-    if (x_ball_position > paddleMarginLeft - 60 &&
-        x_ball_position < paddleMarginLeft + 60 &&
+    if (x_ball_position > paddleMarginLeft - ballSize &&
+        x_ball_position < paddleMarginLeft + paddleWidth &&
         y_ball_position > y_paddlePosition &&
-        y_ball_position < y_paddlePosition+paddleHeight) {
+        y_ball_position < y_paddlePosition + paddleHeight) {
         y_speed = -3;
     }
 }
 
 
-function checkGridEdges() {
+function checkGridEdgesCollision() {
 
     if (y_ball_position < gridTopEdge) {
         y_speed = 3;
@@ -139,13 +140,15 @@ function checkGridEdges() {
     }
     else if (y_ball_position > gridBottomEdge) {
         y_speed = -3;
-        // ball.style.display = 'none';
+        ball.style.display = 'none';
+        ball.parentNode.removeChild(ball);
+        alert('You loose')
     }
 }
 
 
 //https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Track_the_score_and_win
-function checkCollision(handle) {
+function checkBrickCollision(handle) {
 
     let brick1 = document.getElementsByClassName('brick1')[0];
     let brick2 = document.getElementsByClassName('brick2')[0];
@@ -226,9 +229,9 @@ function checkCollision(handle) {
 function moveBall() {
     changeBallPosition();
     updateBallPosition();
-    checkGridEdges();
-    checkPaddlePosition();
-    checkCollision();
+    checkGridEdgesCollision();
+    checkPaddleCollision();
+    checkBrickCollision();
 }
 
 
