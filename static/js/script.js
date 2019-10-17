@@ -29,6 +29,8 @@ const newBricks = [
 let isGameStarted = false;
 
 
+let score = 5;
+
 let game = document.getElementById('game');
 
 
@@ -192,6 +194,7 @@ function canBrickBounce(brick1){
 function updateBallMovement(brick, brickPosition){
     if (brickCollision(brick, brickPosition) && canBrickBounce(brick)
     ) {
+        score --;
         y_speed = 3;
         hideBrick(brick);
     }
@@ -208,6 +211,13 @@ function checkBrickCollision(handle) {
 
 
 function moveBall() {
+    if(score === 0){
+        alert('You win!');
+        y_speed = 0;
+        ball.style.display = 'none';
+        y_ball_position = 550;
+        score -= 1;
+}
     changeBallPosition();
     updateBallPosition();
     checkGridEdgesCollision();
