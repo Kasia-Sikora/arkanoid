@@ -35,7 +35,7 @@ a.button {
 }
 
 
-.grid {
+#grid {
     width: 600px;
     height: 700px;
     background-image: url('/static/img/hud.png');
@@ -43,11 +43,10 @@ a.button {
     background-color: black;
     opacity: 0.8;
     box-shadow: 10px 10px 10px 10px black;
-    margin-top: 2%;
+    margin-top: 5%;
     margin-left: 20%;
     padding: 30px;
     flex-wrap: wrap;
-    /*justify-content: space-evenly;*/
     display: flex;
 }
 
@@ -64,8 +63,8 @@ a.button {
     margin-left: 60px;
 }
 
-.paddle {
-    background-image: url('/static/img/paddle.jpg');
+#paddle {
+    background-image: url('/static/img/paddle.png');
     background-size: cover;
     height: 20px;
     width: 110px;
@@ -74,7 +73,7 @@ a.button {
     position: absolute;
 }
 
-.ball {
+#ball {
     background-image: url('/static/img/ball.png');
     background-size: cover;
     height: 20px;

@@ -35,7 +35,7 @@ let game = document.getElementById('game');
 
 
 let grid = document.createElement('div');
-grid.setAttribute('class', 'grid');
+grid.setAttribute('id', 'grid');
 game.appendChild(grid);
 
 
@@ -46,19 +46,20 @@ for (let bricks of newBricks) {
     brick.classList.add('brick' + i);
     brick.style.display = 'flex';
     brick.dataset.name = bricks.name;
+    brick.dataset.position = bricks.x_position;
     grid.appendChild(brick);
     i++
 }
 
 
 let paddle = document.createElement('div');
-paddle.setAttribute('class', 'paddle');
+paddle.setAttribute('id', 'paddle');
 paddle.classList.add('paddle');
 grid.appendChild(paddle);
 
 
 let ball = document.createElement('div');
-ball.setAttribute('class', 'ball');
+ball.setAttribute('id', 'ball');
 ball.classList.add('ball');
 grid.appendChild(ball);
 
@@ -72,8 +73,8 @@ const gridRightEdge = 570;
 const ballSize = 20;
 let y_ball_position = 550;
 let x_ball_position = 305;
-let x_speed = 10;
-let y_speed = -3;
+let x_ball_speed = 10;
+let y_ball_speed = -3;
 
 
 let paddleMarginLeft = 260;
@@ -81,7 +82,7 @@ let paddleWidth = 110;
 
 
 if (game) {
-    document.body.style.backgroundImage = "url('/static/img/wallpaper1.jpg')";
+    document.body.style.backgroundImage = "url('/static/img/eve-online-space-spaceship-black-wallpaper-preview.jpg')";
 }
 
 
@@ -120,8 +121,8 @@ document.addEventListener('keydown', (event) => {
 
 function changeBallPosition() {
 
-    y_ball_position += y_speed;
-    x_ball_position += x_speed;
+    y_ball_position += y_ball_speed;
+    x_ball_position += x_ball_speed;
 }
 
 
@@ -139,14 +140,14 @@ function checkPaddleCollision() {
         x_ball_position < paddleMarginLeft + paddleWidth &&
         y_ball_position > y_paddlePosition &&
         y_ball_position < y_paddlePosition + paddleHeight) {
-        y_speed = -3;
+        y_ball_speed = -3;
     }
 }
 
 
 function looseGame(){
     alert('You loose');
-    y_speed = 0;
+    y_ball_speed = 0;
     ball.style.display = 'none';
     y_ball_position = 550;
 }
@@ -154,48 +155,48 @@ function looseGame(){
 function checkGridEdgesCollision() {
 
     if (y_ball_position < gridTopEdge) {
-        y_speed = 3;
+        y_ball_speed = 3;
     }
     else if (x_ball_position > gridRightEdge) {
-        x_speed = -10;
+        x_ball_speed = -10;
     }
     else if (x_ball_position < gridLeftEdge) {
-        x_speed = 10;
+        x_ball_speed = 10;
     }
     else if (y_ball_position > gridBottomEdge) {
         looseGame()
     }
 }
 
-function hideBrick(brick1){
-    brick1.style.display = 'block';
-    brick1.classList.add('hide');
+function hideBrick(brick){
+    brick.style.display = 'block';
+    brick.classList.add('hide');
 }
 
 
-function brickCollision(brick, brickPosition){
+function brickCollision(brickPosition){
 
     let brickSize = 50;
     let y_brickPosition = 120;
     let brickHeight = 20;
 
-    return x_ball_position + ballSize > brickPosition - ballSize/2 &&
+    return x_ball_position + ballSize > brickPosition &&
     x_ball_position < brickPosition + brickSize &&
     y_ball_position > y_brickPosition &&
     y_ball_position < y_brickPosition + brickHeight
 }
 
 
-function canBrickBounce(brick1){
-    return brick1.style.display === 'flex'
+function canBrickBounce(brick){
+    return brick.style.display === 'flex'
 }
 
 
 function updateBallMovement(brick, brickPosition){
-    if (brickCollision(brick, brickPosition) && canBrickBounce(brick)
+    if (brickCollision(brickPosition) && canBrickBounce(brick)
     ) {
         score --;
-        y_speed = 3;
+        y_ball_speed = 3;
         hideBrick(brick);
     }
 }
@@ -210,14 +211,18 @@ function checkBrickCollision(handle) {
     }
 
 
-function moveBall() {
-    if(score === 0){
+function checkIfWinGame() {
+    if (score === 0) {
         alert('You win!');
-        y_speed = 0;
+        y_ball_speed = 0;
         ball.style.display = 'none';
         y_ball_position = 550;
         score -= 1;
+    }
 }
+
+function moveBall() {
+    checkIfWinGame();
     changeBallPosition();
     updateBallPosition();
     checkGridEdgesCollision();
